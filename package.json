@@ -1,0 +1,22 @@
+{
+  "name": "players-bazaar",
+  "version": "1.0.0",
+  "description": "A more efficient way for transferring football players",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariusobreja/Players-Bazaar.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mariusobreja/Players-Bazaar/issues"
+  },
+  "homepage": "https://github.com/mariusobreja/Players-Bazaar#readme",
+  "dependencies": {
+    "styled-components": "^5.3.0"
+  }
+}
