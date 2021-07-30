@@ -2,11 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { FaShoppingCart, FaUserPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { usePlayersContext } from '../context/playersContext';
 
 const CartLoginButtons = () => {
+  const { closeSidebar } = usePlayersContext();
+
   return (
     <Wrapper className='cart-btn-wrapper'>
-      <Link to='/cart' className='cart-btn'>
+      <Link to='/cart' className='cart-btn' onClick={closeSidebar}>
         Cart
         <span className='cart-container'>
           <FaShoppingCart />

@@ -1,11 +1,17 @@
 import React from 'react';
+import styled from 'styled-components';
+import PageHero from '../components/PageHero';
 
 const CheckoutPage = () => {
   return (
-    <div>
-      <h4>checkout page</h4>
-    </div>
+    <main>
+      <PageHero title='checkout' />
+      <Wrapper className='page'></Wrapper>
+      <h1>checkout here</h1>
+    </main>
   );
 };
+
+const Wrapper = styled.div``;
 
 export default CheckoutPage;

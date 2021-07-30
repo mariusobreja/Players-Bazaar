@@ -5,15 +5,19 @@ import styled from 'styled-components';
 import { links } from '../utils/constants';
 import { FaTimes } from 'react-icons/fa';
 import CartLoginButtons from './CartLoginButtons';
+import { usePlayersContext } from '../context/playersContext';
 
 const Sidebar = () => {
-  const isOpen = true;
+  const { isSidebarOpen, closeSidebar } = usePlayersContext();
+
   return (
     <SidebarContainer>
-      <aside className={`${isOpen ? 'sidebar show-sidebar' : 'sidebar'}`}>
+      <aside
+        className={`${isSidebarOpen ? 'sidebar show-sidebar' : 'sidebar'}`}
+      >
         <div className='sidebar-header'>
           <img src={logo} className='logo' alt='Players Bazaar' />
-          <button className='close-btn' type='button'>
+          <button className='close-btn' type='button' onClick={closeSidebar}>
             <FaTimes />
           </button>
         </div>
@@ -22,12 +26,16 @@ const Sidebar = () => {
             const { id, text, url } = link;
             return (
               <li key={id}>
-                <Link to={url}>{text}</Link>
+                <Link to={url} onClick={closeSidebar}>
+                  {text}
+                </Link>
               </li>
             );
           })}
           <li>
-            <Link to='/checkout'>checkout</Link>
+            <Link to='/checkout' onClick={closeSidebar}>
+              checkout
+            </Link>
           </li>
         </ul>
         <CartLoginButtons />
