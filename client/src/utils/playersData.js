@@ -3,50 +3,68 @@ import React from 'react';
 export const players = [
   {
     id: '1',
-    name: 'Ionut Isac',
+    name: 'Andre Lellis',
     marketValue: '12000000',
-    playerImage:
-      'https://www.linkedin.com/in/ionut-isac-266611194/detail/photo/',
     positions: 'Offensive Midfielder',
-    club: 'FC Austin',
-    description: 'The most lazy player in the world',
-    age: '36',
-    featured: 'true'
+    club: 'FC Botafago',
+    description: 'Nothing can beat Fogo di Chao',
+    age: '33',
+    featured: true,
+    image: 'https://pngtree.com/freepng/tattered-brazilian-flag_6168303.html'
   },
   {
     id: '2',
-    playerName: 'Ionut Isac',
-    firstName: 'Ionut',
-    lastName: 'Isac',
-    nationalities: 'American',
-    nationImage:
-      'https://tmssl.akamaized.net/images/flagge/verysmall/67.png?lm=1520611569',
-    club: 'FC Austin',
-    playerImage:
-      'https://img.a.transfermarkt.technology/portrait/medium/default.jpg?lm=1',
-    description: 'The most lazy player in the world',
-    age: '36',
-    positions: 'Offensive Midfielder',
-    marketValue: '12000000',
-    currency: 'euro'
+    name: 'Daniel Slattery',
+    marketValue: '11500000',
+    positions: 'Left Midfielder',
+    club: 'FC Dublin',
+    description: 'Inferior Daniel',
+    age: '32',
+    featured: true,
+    image: 'https://pngtree.com/freepng/tattered-brazilian-flag_6168303.html'
+  },
+  {
+    id: '3',
+    name: 'Daniel Cassel',
+    marketValue: '9000000',
+    positions: 'Right Midfielder',
+    club: 'Bristol Rovers',
+    description: 'Superior Daniel',
+    age: '24',
+    featured: true,
+    image: 'https://pngtree.com/freepng/tattered-brazilian-flag_6168303.html'
   }
 ];
 
 export const singlePlayer = [
   {
     id: '1',
-    playerName: 'Ionut Isac',
-    firstName: 'Ionut',
-    lastName: 'Isac',
-    nationalities: 'American',
-    nationImage: '../assets/countryFlags/USA.icns',
-    club: 'FC Austin',
-    playerImage:
-      'https://www.linkedin.com/in/ionut-isac-266611194/detail/photo/',
-    description: 'The most lazy player in the world',
-    age: '36',
+    name: 'Andre Lellis',
+    firstName: 'Andre',
+    lastName: 'Lellis',
+    nationalities: 'Brazilian',
+    nationImage:
+      'https://pngtree.com/freepng/tattered-brazilian-flag_6168303.html',
+    club: 'FC Botafago',
+    description: 'Nothing can beat Fogo di Chao',
+    age: '33',
     positions: 'Offensive Midfielder',
     marketValue: '12000000',
-    currency: 'euro'
+    category: 'midfielder'
+  },
+  {
+    id: '2',
+    name: 'Andre Lellis',
+    firstName: 'Andre',
+    lastName: 'Lellis',
+    nationalities: 'Brazilian',
+    nationImage:
+      'https://pngtree.com/freepng/tattered-brazilian-flag_6168303.html',
+    club: 'FC Botafago',
+    description: 'Nothing can beat Fogo di Chao',
+    age: '33',
+    positions: 'Offensive Midfielder',
+    marketValue: '12000000',
+    category: 'midfielder'
   }
 ];

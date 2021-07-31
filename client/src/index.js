@@ -3,10 +3,13 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import './index.css';
 import { PlayersProvider } from './context/playersContext';
+import { FilterProvider } from './context/filterContext';
 
 ReactDOM.render(
   <PlayersProvider>
-    <App />
+    <FilterProvider>
+      <App />
+    </FilterProvider>
   </PlayersProvider>,
   document.getElementById('root')
 );

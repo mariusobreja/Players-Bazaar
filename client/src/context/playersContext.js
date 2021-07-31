@@ -1,16 +1,17 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import reducer from '../reducer/playersReducer';
-import axios from 'axios';
-import { players } from '../utils/playersData';
+// import axios from 'axios';
+import { players, singlePlayer } from '../utils/playersData';
 import {
   SIDEBAR_OPEN,
   SIDEBAR_CLOSE,
   GET_PLAYERS_BEGIN,
   GET_PLAYERS_SUCCESS,
-  GET_PLAYERS_ERROR
-  // GET_SINGLE_PLAYER_BEGIN,
-  // GET_SINGLE_PLAYER_SUCCESS,
-  // GET_SINGLE_PLAYER_ERROR
+  GET_PLAYERS_ERROR,
+  GET_SINGLE_PLAYER_BEGIN,
+  GET_SINGLE_PLAYER_SUCCESS,
+  GET_SINGLE_PLAYER_ERROR,
+  GET_SINGLE_PLAYER_FINAL
 } from '../actions';
 
 const initialState = {
@@ -18,7 +19,11 @@ const initialState = {
   playersLoading: false,
   playersError: false,
   players: [],
-  featuredPlayers: []
+  featuredPlayers: [],
+  singlePlayerLoading: false,
+  singlePlayerError: false,
+  singlePlayers: [],
+  singlePlayer: {}
 };
 
 const PlayersContext = React.createContext();
@@ -44,12 +49,39 @@ export const PlayersProvider = ({ children }) => {
     return inputPlayers;
   };
 
+  const fetchSinglePlayers = async (inputSinglePlayers) => {
+    dispatch({ type: GET_SINGLE_PLAYER_BEGIN });
+    try {
+      const singlePlayer = inputSinglePlayers;
+      dispatch({ type: GET_SINGLE_PLAYER_SUCCESS, payload: singlePlayer });
+    } catch (error) {
+      dispatch({ type: GET_SINGLE_PLAYER_ERROR });
+    }
+    return inputSinglePlayers;
+  };
+
+  const fetchSinglePlayer = (id) => {
+    dispatch({ type: GET_SINGLE_PLAYER_FINAL, payload: id });
+  };
+
+  useEffect(() => {
+    fetchSinglePlayers(singlePlayer);
+  }, []);
+
   useEffect(() => {
     fetchPlayers(players);
   }, []);
 
   return (
-    <PlayersContext.Provider value={{ ...state, openSidebar, closeSidebar }}>
+    <PlayersContext.Provider
+      value={{
+        ...state,
+        openSidebar,
+        closeSidebar,
+        fetchSinglePlayers,
+        fetchSinglePlayer
+      }}
+    >
       {children}
     </PlayersContext.Provider>
   );
