@@ -8,13 +8,22 @@ const ListView = ({ players }) => {
   return (
     <Wrapper>
       {players.map((player) => {
-        const { id, name, marketValue, description, image } = player;
+        const { id, name, marketValue, description, image, featured } = player;
         return (
           <article key={id}>
             <img src={image} alt={name} />
             <div>
               <h4>{name}</h4>
-              <h5 className='price'>{formatMarketValue(marketValue)}</h5>
+              {featured === true ? (
+                <h5 className='price'>
+                  <del>{formatMarketValue(marketValue)}</del>
+                  <br />
+                  <ins>{formatMarketValue(marketValue * 0.8)}</ins>
+                </h5>
+              ) : (
+                <h5 className='price'>{formatMarketValue(marketValue)}</h5>
+              )}
+              {/* <h5 className='price'>{formatMarketValue(marketValue)}</h5> */}
               <p>{description}</p>
               <Link to={`players/${id}`} className='btn'>
                 Details

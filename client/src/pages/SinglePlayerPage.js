@@ -36,6 +36,7 @@ const SinglePlayerPage = () => {
   if (error) {
     return <Error />;
   }
+
   const {
     name,
     marketValue,
@@ -47,7 +48,7 @@ const SinglePlayerPage = () => {
     positions,
     id: idd,
     images
-  } = player;
+  } = singlePlayer[id];
   return (
     <Wrapper>
       <PageHero title={name} player />

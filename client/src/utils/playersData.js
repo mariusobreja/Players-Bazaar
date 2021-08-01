@@ -47,7 +47,7 @@ export const players = [
     id: '4',
     name: 'Marius Obreja',
     marketValue: '13000000',
-    positions: 'Right Forward',
+    positions: 'goalkeeper',
     club: 'Bristol Rovers',
     description: 'Superior Daniel',
     age: '24',

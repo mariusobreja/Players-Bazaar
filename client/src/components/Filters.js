@@ -1,11 +1,140 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useFilterContext } from '../context/filterContext';
-import { getUniqueValues, formatPrice } from '../utils/helpers';
+import { getUniqueValues, formatMarketValue } from '../utils/helpers';
 import { FaCheck } from 'react-icons/fa';
 
 const Filters = () => {
-  return <h4>filters</h4>;
+  const {
+    filters: {
+      text,
+      category,
+      positions,
+      foot,
+      min_Value,
+      max_Value,
+      marketValue,
+      injured
+    },
+    updateFilters,
+    clearFilters,
+    allPlayers
+  } = useFilterContext();
+
+  const categories = getUniqueValues(allPlayers, 'category');
+  const position = getUniqueValues(allPlayers, 'positions');
+  const feet = getUniqueValues(allPlayers, 'foot');
+
+  return (
+    <Wrapper>
+      <div className='content'>
+        <form onSubmit={(e) => e.preventDefault()}>
+          {/* {search input} */}
+          <div className='form-control'>
+            <input
+              type='text'
+              name='text'
+              placeholder='search'
+              className='search-input'
+              value={text}
+              onChange={updateFilters}
+            />
+          </div>
+          {/* {end search input} */}
+          {/* categories */}
+          <div className='form-control'>
+            <h5>category</h5>
+            <div>
+              {categories.map((c, index) => {
+                return (
+                  <button
+                    key={index}
+                    onClick={updateFilters}
+                    type='button'
+                    name='category'
+                    className={`${
+                      category === c.toLowerCase() ? 'active' : null
+                    }`}
+                  >
+                    {c}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          {/* end ofcategories */}
+          {/* positions */}
+          <div className='form-control'>
+            <h5>position</h5>
+            <select
+              name='positions'
+              value={positions}
+              onChange={updateFilters}
+              className='positions'
+            >
+              {position.map((c, index) => {
+                return (
+                  <option key={index} value={c}>
+                    {c}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* end of positions */}
+          {/* foot */}
+          <div className='form-control'>
+            <h5>Preferred foot</h5>
+            <select
+              name='foot'
+              value={foot}
+              onChange={updateFilters}
+              className='positions'
+            >
+              {feet.map((f, index) => {
+                return (
+                  <option key={index} value={f}>
+                    {f}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+          {/* end of foot */}
+          {/* value */}
+          <div className='form-control'>
+            <h5>value</h5>
+            <p className='price'>{formatMarketValue(marketValue)}</p>
+            <input
+              type='range'
+              name='marketValue'
+              onChange={updateFilters}
+              min={min_Value}
+              max={max_Value}
+              value={marketValue}
+            />
+          </div>
+          {/* end of value */}
+          {/* injured */}
+          <div className='form-control injury'>
+            <label htmlFor='injured'>not Injured</label>
+            <input
+              type='checkbox'
+              name='injured'
+              id='injured'
+              onChange={updateFilters}
+              checked={!injured}
+            />
+          </div>
+          {/* end of injured */}
+        </form>
+        <button type='button' className='clear-btn' onClick={clearFilters}>
+          {' '}
+          clear filters
+        </button>
+      </div>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.section`

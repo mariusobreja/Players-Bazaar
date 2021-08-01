@@ -20,6 +20,7 @@ const initialState = {
   sort: 'marketValue-lowest',
   filters: {
     text: '',
+    category: 'all',
     positions: 'all',
     foot: 'all',
     min_Value: 0,
@@ -41,8 +42,9 @@ export const FilterProvider = ({ children }) => {
   console.log('filter provider:', players);
 
   useEffect(() => {
+    dispatch({ type: FILTER_PLAYERS });
     dispatch({ type: SORT_PLAYERS });
-  }, [players, state.sort]);
+  }, [players, state.sort, state.filters]);
 
   const setGridView = () => {
     dispatch({ type: SET_GRIDVIEW });
@@ -57,9 +59,24 @@ export const FilterProvider = ({ children }) => {
     dispatch({ type: UPDATE_SORT, payload: value });
   };
 
-  const updateFilters = (e) => {};
+  const updateFilters = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === 'category') {
+      value = e.target.textContent;
+    }
+    if (name === 'marketValue') {
+      value = Number(value);
+    }
+    if (name === '!injured') {
+      value = e.target.checked;
+    }
+    dispatch({ type: UPDATE_FILTERS, payload: { name, value } });
+  };
 
-  const clearFilters = (e) => {};
+  const clearFilters = () => {
+    dispatch({ type: CLEAR_FILTERS });
+  };
 
   return (
     <FilterContext.Provider

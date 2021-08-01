@@ -52,6 +52,61 @@ const filterReducer = (state, action) => {
     }
     return { ...state, filteredPlayers: tempPlayers };
   }
+  if (action.type === UPDATE_FILTERS) {
+    const { name, value } = action.payload;
+    return { ...state, filters: { ...state.filters, [name]: value } };
+  }
+  if (action.type === FILTER_PLAYERS) {
+    const { allPlayers } = state;
+    const { text, category, positions, foot, marketValue, injured } =
+      state.filters;
+    let tempPlayers = [...allPlayers];
+    //start of filtering - text
+    if (text) {
+      tempPlayers = tempPlayers.filter((player) => {
+        return player.name.toLowerCase().startsWith(text);
+      });
+    }
+    //category
+    if (category !== 'all') {
+      tempPlayers = tempPlayers.filter(
+        (player) => player.category === category
+      );
+    }
+    //position
+    if (positions !== 'all') {
+      tempPlayers = tempPlayers.filter(
+        (player) => player.positions === positions
+      );
+    }
+    //foot
+    if (foot !== 'all') {
+      tempPlayers = tempPlayers.filter((player) => player.foot === foot);
+    }
+    //value
+    tempPlayers = tempPlayers.filter(
+      (player) => player.marketValue <= marketValue
+    );
+    //injured
+    if (injured) {
+      tempPlayers = tempPlayers.filter((player) => player.injured === true);
+    }
+    return { ...state, filteredPlayers: tempPlayers };
+  }
+  if (action.type === CLEAR_FILTERS) {
+    return {
+      ...state,
+      filters: {
+        ...state.filters,
+        text: '',
+        category: 'all',
+        positions: 'all',
+        foot: 'all',
+        marketValue: state.filters.max_Value,
+        injured: false
+      }
+    };
+  }
   throw new Error(`No Matching "${action.type}" - action type`);
 };
 

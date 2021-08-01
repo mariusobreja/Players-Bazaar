@@ -32,6 +32,7 @@ const playersReducer = (state, action) => {
       featuredPlayers
     };
   }
+  console.log('action= ', action.type);
   if (action.type === GET_PLAYERS_ERROR) {
     return { ...state, playersLoading: false, playersError: true };
   }
@@ -51,6 +52,7 @@ const playersReducer = (state, action) => {
   }
   if (action.type === GET_SINGLE_PLAYER_FINAL) {
     const filteredPlayers = state.singlePlayers.filter((e) => {
+      console.log('id= ', action.payload);
       return e.id === action.payload;
     });
     return { ...state, filteredPlayer: filteredPlayers };

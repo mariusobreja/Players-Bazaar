@@ -5,7 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 // import indexImage from '../assets/indexPic';
 
-const Player = ({ positions, name, marketValue, id, image }) => {
+const Player = ({ positions, name, marketValue, id, image, featured }) => {
   return (
     <Wrapper>
       {/* <div>
@@ -25,11 +25,15 @@ const Player = ({ positions, name, marketValue, id, image }) => {
       </div>
       <footer>
         <h5>{positions}</h5>
-        <p>
-          <del>{formatMarketValue(marketValue)}</del>
-          <br />
-          <ins>{formatMarketValue(marketValue * 0.8)}</ins>
-        </p>
+        {featured === true ? (
+          <p>
+            <del>{formatMarketValue(marketValue)}</del>
+            <br />
+            <ins>{formatMarketValue(marketValue * 0.8)}</ins>
+          </p>
+        ) : (
+          <p>{formatMarketValue(marketValue)}</p>
+        )}
       </footer>
     </Wrapper>
   );
