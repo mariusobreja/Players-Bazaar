@@ -39,7 +39,7 @@ const playersReducer = (state, action) => {
     return { ...state, singlePlayerLoading: true, singlePlayerError: false };
   }
   if (action.type === GET_SINGLE_PLAYER_SUCCESS) {
-    console.log(action.payload);
+    console.log('playersReducer: ', action.payload);
     return {
       ...state,
       singlePlayerLoading: false,

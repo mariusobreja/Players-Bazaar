@@ -1,10 +1,30 @@
 import React from 'react';
 import styled from 'styled-components';
-import { formatPrice } from '../utils/helpers';
+import { formatMarketValue } from '../utils/helpers';
 import { Link } from 'react-router-dom';
+import indexImage from '../assets/indexPic';
 
-const ListView = () => {
-  return <h4>list view</h4>;
+const ListView = ({ players }) => {
+  return (
+    <Wrapper>
+      {players.map((player) => {
+        const { id, name, marketValue, description, image } = player;
+        return (
+          <article key={id}>
+            <img src={image} alt={name} />
+            <div>
+              <h4>{name}</h4>
+              <h5 className='price'>{formatMarketValue(marketValue)}</h5>
+              <p>{description}</p>
+              <Link to={`players/${id}`} className='btn'>
+                Details
+              </Link>
+            </div>
+          </article>
+        );
+      })}
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.section`
@@ -15,7 +35,7 @@ const Wrapper = styled.section`
     width: 100%;
     display: block;
     width: 300px;
-    height: 200px;
+    height: 100%;
     object-fit: cover;
     border-radius: var(--radius);
     margin-bottom: 1rem;

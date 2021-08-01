@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { formatMarketValue } from '../utils/helpers';
 import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import indexImage from '../assets/indexPic';
+// import indexImage from '../assets/indexPic';
 
 const Player = ({ positions, name, marketValue, id, image }) => {
   return (
@@ -18,7 +18,7 @@ const Player = ({ positions, name, marketValue, id, image }) => {
         <h3>{name}</h3>
       </header>
       <div className='container'>
-        <img src={indexImage[id]} alt={name} />
+        <img src={image} alt={name} />
         <Link to={`/players/${id}`} className='link'>
           <FaSearch />
         </Link>

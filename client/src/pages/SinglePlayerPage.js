@@ -14,7 +14,7 @@ const SinglePlayerPage = () => {
   const {
     singlePlayerLoading: loading,
     singlePlayerError: error,
-    singlePlayer: player,
+    filteredPlayer: player,
     fetchSinglePlayer
   } = usePlayersContext();
 
@@ -36,12 +36,33 @@ const SinglePlayerPage = () => {
   if (error) {
     return <Error />;
   }
-  console.log(player);
-  return <h4>single product page</h4>;
+  const {
+    name,
+    marketValue,
+    description,
+    injured,
+    stars,
+    club,
+    nationalities,
+    positions,
+    id: idd,
+    images
+  } = player;
+  return (
+    <Wrapper>
+      <PageHero title={name} player />
+      <div className='sectin section-center page'>
+        <Link to='/players' className='btn'>
+          back to players
+        </Link>
+        <div className='player-center'>{nationalities}</div>
+      </div>
+    </Wrapper>
+  );
 };
 
 const Wrapper = styled.main`
-  .product-center {
+  .player-center {
     display: grid;
     gap: 4rem;
     margin-top: 2rem;
@@ -64,7 +85,7 @@ const Wrapper = styled.main`
   }
 
   @media (min-width: 992px) {
-    .product-center {
+    .player-center {
       grid-template-columns: 1fr 1fr;
       align-items: center;
     }
