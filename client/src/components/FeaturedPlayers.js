@@ -25,7 +25,7 @@ const FeaturedPlayers = () => {
         <div className='underline'></div>
         <div className='section-center featured'>
           {featured.map((player) => {
-            return <Player key={player.id} {...player} />;
+            return <Player key={player.id} player={player} {...player} />;
           })}
         </div>
       </div>

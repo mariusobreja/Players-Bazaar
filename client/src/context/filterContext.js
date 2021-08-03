@@ -39,7 +39,6 @@ export const FilterProvider = ({ children }) => {
   useEffect(() => {
     dispatch({ type: LOAD_PLAYERS, payload: players });
   }, [players]);
-  console.log('filter provider:', players);
 
   useEffect(() => {
     dispatch({ type: FILTER_PLAYERS });

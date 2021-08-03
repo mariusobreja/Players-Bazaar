@@ -3,9 +3,15 @@ import styled from 'styled-components';
 import { usePlayersContext } from '../context/playersContext';
 import { formatMarketValue } from '../utils/helpers';
 import { Link } from 'react-router-dom';
-import indexImage from '../assets/indexPic';
 import { singlePlayer } from '../utils/playersData';
-import { Loading, Error, PageHero } from '../components';
+import {
+  Loading,
+  Error,
+  PageHero,
+  PlayersImages,
+  Stars,
+  AddToCart
+} from '../components';
 import { useParams, useHistory } from 'react-router-dom';
 
 const SinglePlayerPage = () => {
@@ -46,8 +52,10 @@ const SinglePlayerPage = () => {
     club,
     nationalities,
     positions,
-    id: idd,
-    images
+    id: reference,
+    images,
+    featured,
+    goals
   } = singlePlayer[id];
   return (
     <Wrapper>
@@ -56,7 +64,48 @@ const SinglePlayerPage = () => {
         <Link to='/players' className='btn'>
           back to players
         </Link>
-        <div className='player-center'>{nationalities}</div>
+        <div className='player-center'>
+          <PlayersImages images={images} />
+          <section className='content'>
+            <h2>{name}</h2>
+            <Stars stars={stars} goals={goals} />
+            {featured === true ? (
+              <h5 className='price'>
+                <del>{formatMarketValue(marketValue)}</del>
+                <br />
+                <ins>{formatMarketValue(marketValue * 0.8)}</ins>
+              </h5>
+            ) : (
+              <h5>{formatMarketValue(marketValue)}</h5>
+            )}
+            <p className='info'>
+              <span>Bio: </span>
+              {description}
+            </p>
+            <p className='info'>
+              <span>Nationality: </span>
+              {nationalities}
+            </p>
+            <p className='info'>
+              <span>Position: </span>
+              {positions}
+            </p>
+            <p className='info'>
+              <span>Injured: </span>
+              {injured === true ? 'Yes' : 'No'}
+            </p>
+            <p className='info'>
+              <span>Our Reference: </span>
+              {reference}
+            </p>
+            <p className='info'>
+              <span>Current Club: </span>
+              {club}
+            </p>
+            <hr />
+            <AddToCart reference={reference} />
+          </section>
+        </div>
       </div>
     </Wrapper>
   );

@@ -5,7 +5,19 @@ import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 // import indexImage from '../assets/indexPic';
 
-const Player = ({ positions, name, marketValue, id, image, featured }) => {
+const Player = ({
+  player,
+  positions,
+  name,
+  marketValue,
+  id,
+  image,
+  featured
+}) => {
+  console.log('this is player: ', player);
+  console.log('name: ', name);
+  console.log('this id: ', id);
+
   return (
     <Wrapper>
       {/* <div>

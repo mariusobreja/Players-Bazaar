@@ -11,7 +11,6 @@ import {
 } from '../actions';
 
 const playersReducer = (state, action) => {
-  console.log('reducer executing', action);
   if (action.type === SIDEBAR_OPEN) {
     return { ...state, isSidebarOpen: true };
   }
@@ -32,7 +31,7 @@ const playersReducer = (state, action) => {
       featuredPlayers
     };
   }
-  console.log('action= ', action.type);
+
   if (action.type === GET_PLAYERS_ERROR) {
     return { ...state, playersLoading: false, playersError: true };
   }
@@ -40,7 +39,6 @@ const playersReducer = (state, action) => {
     return { ...state, singlePlayerLoading: true, singlePlayerError: false };
   }
   if (action.type === GET_SINGLE_PLAYER_SUCCESS) {
-    console.log('playersReducer: ', action.payload);
     return {
       ...state,
       singlePlayerLoading: false,

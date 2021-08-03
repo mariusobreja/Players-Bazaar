@@ -15,6 +15,14 @@ import Sort from './Sort';
 import Filters from './Filters';
 import ListView from './ListView';
 import GridView from './GridView';
+import PlayersImages from './PlayersImages';
+import Stars from './Stars';
+import AddToCart from './AddToCart';
+import AmountButtons from './AmountButtons';
+import CartColumns from './CartColumns';
+import CartContent from './CartContent';
+import CartItem from './CartItem';
+import CartTotals from './CartTotals';
 
 export {
   Navbar,
@@ -33,5 +41,13 @@ export {
   PlayersList,
   Sort,
   ListView,
-  GridView
+  GridView,
+  PlayersImages,
+  Stars,
+  AddToCart,
+  AmountButtons,
+  CartColumns,
+  CartContent,
+  CartItem,
+  CartTotals
 };

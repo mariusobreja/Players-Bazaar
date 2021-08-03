@@ -4,11 +4,14 @@ import App from './App';
 import './index.css';
 import { PlayersProvider } from './context/playersContext';
 import { FilterProvider } from './context/filterContext';
+import { CartProvider } from './context/cartContext';
 
 ReactDOM.render(
   <PlayersProvider>
     <FilterProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </FilterProvider>
   </PlayersProvider>,
   document.getElementById('root')

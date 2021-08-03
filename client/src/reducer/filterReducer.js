@@ -11,7 +11,6 @@ import {
 
 const filterReducer = (state, action) => {
   if (action.type === LOAD_PLAYERS) {
-    console.log('filter reducer:', action.payload);
     let maxValue = action.payload.map((v) => v.marketValue);
     maxValue = Math.max(...maxValue);
 
