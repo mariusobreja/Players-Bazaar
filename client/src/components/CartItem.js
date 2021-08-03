@@ -4,6 +4,10 @@ import { formatMarketValue } from '../utils/helpers';
 import AmountButtons from './AmountButtons';
 import { FaTrash } from 'react-icons/fa';
 import { useCartContext } from '../context/cartContext';
+import { singlePlayer } from '../utils/playersData';
+
+const discounted = singlePlayer[0].featured;
+
 const CartItem = ({ id, image, name, price, amount }) => {
   const { removeItem, toggleAmount } = useCartContext();
 
@@ -21,12 +25,38 @@ const CartItem = ({ id, image, name, price, amount }) => {
         <img src={image} alt={name} />
         <div>
           <h5 className='name'>{name}</h5>
-          <h5 className='price-small'>{formatMarketValue(price)}</h5>
+          {/* <h5 className='price-small'>{formatMarketValue(price)}</h5> */}
+          {discounted === true ? (
+            <h5 className='price'>
+              <del>{formatMarketValue(price)}</del>
+              <br />
+              <ins>{formatMarketValue(price * 0.8)}</ins>
+            </h5>
+          ) : (
+            <h5 className='price'>{formatMarketValue(price)}</h5>
+          )}
         </div>
       </div>
-      <h5 className='price'>{formatMarketValue(price)}</h5>
+      {/* <h5 className='price'>{formatMarketValue(price)}</h5> */}
+      {discounted === true ? (
+        <h5 className='price'>
+          <del>{formatMarketValue(price)}</del>
+          <br />
+          <ins>{formatMarketValue(price * 0.8)}</ins>
+        </h5>
+      ) : (
+        <h5 className='price'>{formatMarketValue(price)}</h5>
+      )}
       <AmountButtons amount={amount} increase={increase} decrease={decrease} />
-      <h5 className='subtotal'>{formatMarketValue(price * amount)}</h5>
+      {discounted === true ? (
+        <h5 className='subtotal'>
+          <del>{formatMarketValue(price * amount)}</del>
+          <br />
+          <ins>{formatMarketValue(price * 0.8 * amount)}</ins>
+        </h5>
+      ) : (
+        <h5 className='subtotal'>{formatMarketValue(price * amount)}</h5>
+      )}
       <button
         type='button'
         className='remove-btn'

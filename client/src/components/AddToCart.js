@@ -7,8 +7,7 @@ import AmountButtons from './AmountButtons';
 const AddToCart = ({ reference }) => {
   const { addToCart } = useCartContext();
   const id = reference;
-  console.log('id: ', id);
-  // console.log('ref of Single Player: ', reference);
+
   const [amount, setAmount] = useState(1);
 
   const increase = () => {

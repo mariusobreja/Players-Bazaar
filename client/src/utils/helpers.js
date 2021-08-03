@@ -2,7 +2,7 @@ export const formatMarketValue = (number) => {
   const newNumber = Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'EUR'
-  }).format(number);
+  }).format(number / 100);
   return newNumber;
 };
 

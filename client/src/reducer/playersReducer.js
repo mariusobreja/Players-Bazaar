@@ -50,7 +50,6 @@ const playersReducer = (state, action) => {
   }
   if (action.type === GET_SINGLE_PLAYER_FINAL) {
     const filteredPlayers = state.singlePlayers.filter((e) => {
-      console.log('id= ', action.payload);
       return e.id === action.payload;
     });
     return { ...state, filteredPlayer: filteredPlayers };

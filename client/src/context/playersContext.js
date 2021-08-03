@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import reducer from '../reducer/playersReducer';
-// import axios from 'axios';
 import { players, singlePlayer } from '../utils/playersData';
 import {
   SIDEBAR_OPEN,
