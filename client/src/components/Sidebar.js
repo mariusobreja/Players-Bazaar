@@ -6,9 +6,11 @@ import { links } from '../utils/constants';
 import { FaTimes } from 'react-icons/fa';
 import CartLoginButtons from './CartLoginButtons';
 import { usePlayersContext } from '../context/playersContext';
+import { useUserContext } from '../context/userContext';
 
 const Sidebar = () => {
   const { isSidebarOpen, closeSidebar } = usePlayersContext();
+  const { myUser } = useUserContext();
 
   return (
     <SidebarContainer>
@@ -32,11 +34,13 @@ const Sidebar = () => {
               </li>
             );
           })}
-          <li>
-            <Link to='/checkout' onClick={closeSidebar}>
-              checkout
-            </Link>
-          </li>
+          {myUser && (
+            <li>
+              <Link to='/checkout' onClick={closeSidebar}>
+                checkout
+              </Link>
+            </li>
+          )}
         </ul>
         <CartLoginButtons />
       </aside>

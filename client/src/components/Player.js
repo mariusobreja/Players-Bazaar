@@ -14,10 +14,6 @@ const Player = ({
   image,
   featured
 }) => {
-  console.log('this is player: ', player);
-  console.log('name: ', name);
-  console.log('this id: ', id);
-
   return (
     <Wrapper>
       {/* <div>

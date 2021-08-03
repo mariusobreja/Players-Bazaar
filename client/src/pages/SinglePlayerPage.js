@@ -20,12 +20,12 @@ const SinglePlayerPage = () => {
   const {
     singlePlayerLoading: loading,
     singlePlayerError: error,
-    filteredPlayer: player,
     fetchSinglePlayer
   } = usePlayersContext();
 
   useEffect(() => {
     fetchSinglePlayer(id);
+    // eslint-disable-next-line
   }, [id]);
 
   useEffect(() => {
@@ -34,6 +34,7 @@ const SinglePlayerPage = () => {
         history.push('/');
       }, 3000);
     }
+    // eslint-disable-next-line
   }, [error]);
 
   if (loading) {

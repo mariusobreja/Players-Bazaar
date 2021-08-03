@@ -1,13 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FaShoppingCart, FaUserPlus } from 'react-icons/fa';
+import { FaShoppingCart, FaUserPlus, FaUserMinus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { usePlayersContext } from '../context/playersContext';
 import { useCartContext } from '../context/cartContext';
+import { useUserContext } from '../context/userContext';
 
 const CartLoginButtons = () => {
   const { closeSidebar } = usePlayersContext();
   const { total_items } = useCartContext();
+  const { loginWithRedirect, myUser, logout } = useUserContext();
 
   return (
     <Wrapper className='cart-btn-wrapper'>
@@ -18,9 +20,37 @@ const CartLoginButtons = () => {
           <span className='cart-value'>{total_items}</span>
         </span>
       </Link>
-      <button type='button' className='auth-btn'>
+      {myUser ? (
+        <button
+          type='button'
+          className='auth-btn'
+          onClick={() =>
+            logout({
+              returnTo: window.location.origin
+            })
+          }
+        >
+          Logout <FaUserMinus />
+        </button>
+      ) : (
+        <button type='button' className='auth-btn' onClick={loginWithRedirect}>
+          Login <FaUserPlus />
+        </button>
+      )}
+      {/* <button type='button' className='auth-btn' onClick={loginWithRedirect}>
         Login <FaUserPlus />
       </button>
+      <button
+        type='button'
+        className='auth-btn'
+        onClick={() =>
+          logout({
+            returnTo: window.location.origin
+          })
+        }
+      >
+        Logout <FaUserMinus />
+      </button> */}
     </Wrapper>
   );
 };

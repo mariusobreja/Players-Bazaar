@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Navbar, Sidebar, Footer } from './components';
 
@@ -33,9 +32,9 @@ function App() {
           <Players />
         </Route>
         <Route exact path='/players/:id' children={<SinglePlayer />} />
-        <Route exact path='/checkout'>
+        <PrivateRoute exact path='/checkout'>
           <Checkout />
-        </Route>
+        </PrivateRoute>
         <Route exact path='*'>
           <Error />
         </Route>

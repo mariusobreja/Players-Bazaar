@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useFilterContext } from '../context/filterContext';
 import { getUniqueValues, formatMarketValue } from '../utils/helpers';
-import { FaCheck } from 'react-icons/fa';
 
 const Filters = () => {
   const {

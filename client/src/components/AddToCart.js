@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useCartContext } from '../context/cartContext';
 import AmountButtons from './AmountButtons';
-import { singlePlayer } from '../utils/playersData';
 
 const AddToCart = ({ reference }) => {
   const { addToCart } = useCartContext();

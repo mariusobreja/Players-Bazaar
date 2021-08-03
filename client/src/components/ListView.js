@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { formatMarketValue } from '../utils/helpers';
 import { Link } from 'react-router-dom';
-import indexImage from '../assets/indexPic';
 
 const ListView = ({ players }) => {
   return (

@@ -8,8 +8,7 @@ import {
   SORT_PLAYERS,
   UPDATE_FILTERS,
   FILTER_PLAYERS,
-  CLEAR_FILTERS,
-  GET_SINGLE_PLAYER_SUCCESS
+  CLEAR_FILTERS
 } from '../actions';
 import { usePlayersContext } from './playersContext';
 

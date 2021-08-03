@@ -9,7 +9,7 @@ import {
 } from '../actions';
 
 const getLocalStorage = () => {
-  let cart = localStorage.getItem('cart');
+  let cart = localStorage.getItem('cart'); //localStorage is a browser API
   if (cart) {
     return JSON.parse(localStorage.getItem('cart'));
   } else {
@@ -18,8 +18,8 @@ const getLocalStorage = () => {
 };
 
 const initialState = {
-  // cart: getLocalStorage(),
-  cart: [],
+  cart: getLocalStorage(),
+  // cart: [],
   total_items: 0,
   total_amount: 0,
   our_fee: 10000

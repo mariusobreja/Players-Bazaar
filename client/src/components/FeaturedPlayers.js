@@ -1,6 +1,5 @@
 import React from 'react';
 import { usePlayersContext } from '../context/playersContext';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Error from './Error';
 import Loading from './Loading';

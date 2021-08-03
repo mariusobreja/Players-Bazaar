@@ -7,7 +7,6 @@ const GridView = ({ players }) => {
     <Wrapper>
       <div className='players-container'>
         {players.map((player) => {
-          console.log(player);
           return <Player key={player.id} {...player} />;
         })}
       </div>
