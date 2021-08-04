@@ -6,19 +6,19 @@ import { formatMarketValue } from '../utils/helpers';
 import { Link } from 'react-router-dom';
 import { singlePlayer } from '../utils/playersData';
 
-const discounted = singlePlayer[0].featured;
-
+// const discounted = singlePlayer[4].featured;
 const CartTotals = () => {
   let { total_amount, our_fee } = useCartContext();
-  const { myUser, loginWithRedirect } = useUserContext();
-  const newTotalAmount = () => {
-    if (discounted === true) {
-      return total_amount * 0.8;
-    }
-    return total_amount;
-  };
 
-  total_amount = newTotalAmount(total_amount);
+  const { myUser, loginWithRedirect } = useUserContext();
+  // const newTotalAmount = () => {
+  // //   if (discounted === true) {
+  // //     return total_amount * 0.8;
+  // //   }
+  // //   return total_amount;
+  // // };
+
+  // total_amount = newTotalAmount(total_amount);
   return (
     <Wrapper>
       <div>

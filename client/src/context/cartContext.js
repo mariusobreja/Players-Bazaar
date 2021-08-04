@@ -22,7 +22,7 @@ const initialState = {
   // cart: [],
   total_items: 0,
   total_amount: 0,
-  our_fee: 10000
+  our_fee: 1000000
 };
 
 const CartContext = React.createContext();

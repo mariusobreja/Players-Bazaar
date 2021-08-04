@@ -2,13 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { formatMarketValue } from '../utils/helpers';
 import AmountButtons from './AmountButtons';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaUikit } from 'react-icons/fa';
 import { useCartContext } from '../context/cartContext';
-import { singlePlayer } from '../utils/playersData';
 
-const discounted = singlePlayer[0].featured;
-
-const CartItem = ({ id, image, name, price, amount }) => {
+const CartItem = ({ id, image, name, price, amount, featured, fullPrice }) => {
+  // const discounted = featured;
   const { removeItem, toggleAmount } = useCartContext();
 
   const increase = () => {
@@ -23,14 +21,15 @@ const CartItem = ({ id, image, name, price, amount }) => {
     <Wrapper>
       <div className='title'>
         <img src={image} alt={name} />
+
         <div>
           <h5 className='name'>{name}</h5>
           {/* <h5 className='price-small'>{formatMarketValue(price)}</h5> */}
-          {discounted === true ? (
+          {featured === true ? (
             <h5 className='price'>
-              <del>{formatMarketValue(price)}</del>
+              <del>{formatMarketValue(fullPrice)}</del>
               <br />
-              <ins>{formatMarketValue(price * 0.8)}</ins>
+              <ins>{formatMarketValue(price)}</ins>
             </h5>
           ) : (
             <h5 className='price'>{formatMarketValue(price)}</h5>
@@ -38,21 +37,21 @@ const CartItem = ({ id, image, name, price, amount }) => {
         </div>
       </div>
       {/* <h5 className='price'>{formatMarketValue(price)}</h5> */}
-      {discounted === true ? (
+      {featured === true ? (
         <h5 className='price'>
-          <del>{formatMarketValue(price)}</del>
+          <del>{formatMarketValue(fullPrice)}</del>
           <br />
-          <ins>{formatMarketValue(price * 0.8)}</ins>
+          <ins>{formatMarketValue(price)}</ins>
         </h5>
       ) : (
         <h5 className='price'>{formatMarketValue(price)}</h5>
       )}
       <AmountButtons amount={amount} increase={increase} decrease={decrease} />
-      {discounted === true ? (
+      {featured === true ? (
         <h5 className='subtotal'>
-          <del>{formatMarketValue(price * amount)}</del>
+          <del>{formatMarketValue(fullPrice * amount)}</del>
           <br />
-          <ins>{formatMarketValue(price * 0.8 * amount)}</ins>
+          <ins>{formatMarketValue(price * amount)}</ins>
         </h5>
       ) : (
         <h5 className='subtotal'>{formatMarketValue(price * amount)}</h5>

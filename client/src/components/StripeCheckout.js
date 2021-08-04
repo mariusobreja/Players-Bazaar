@@ -14,7 +14,7 @@ import { formatMarketValue } from '../utils/helpers';
 import { useHistory } from 'react-router-dom';
 import { singlePlayer } from '../utils/playersData';
 
-const discounted = singlePlayer[0].featured;
+const discounted = singlePlayer[4].featured;
 
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 

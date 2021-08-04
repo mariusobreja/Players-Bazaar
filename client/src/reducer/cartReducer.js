@@ -13,6 +13,12 @@ const cart_reducer = (state, action) => {
     const { id, amount } = action.payload;
     const tempItem = state.cart.find((i) => i.id === id);
     const player = singlePlayer.filter((player) => player.id === id)[0];
+    let playerPrice = () => {
+      if (player.featured === true) {
+        return player.marketValue * 0.8;
+      }
+      return player.marketValue;
+    };
 
     if (tempItem) {
       const tempCart = state.cart.map((cartItem) => {
@@ -31,7 +37,9 @@ const cart_reducer = (state, action) => {
         name: player.name,
         amount,
         image: player.images[0].url,
-        price: player.marketValue
+        price: playerPrice(player.marketValue),
+        fullPrice: player.marketValue,
+        featured: player.featured
       };
 
       return { ...state, cart: [...state.cart, newItem] };
