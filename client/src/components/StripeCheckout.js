@@ -67,9 +67,7 @@ const CheckoutForm = () => {
       );
 
       setClientSecret(data.clientSecret);
-    } catch (error) {
-      // console.log('error :', error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
