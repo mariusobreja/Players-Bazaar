@@ -10,7 +10,7 @@
 
 ## Introduction
 
-[<Img src="./client/src/assets/homePage" width="200px"/>][players-bazaar]
+[<Img src="./client/src/assets/homePage.png" width="200px"/>][players-bazaar]
 [<Img src="./client/src/assets/featuredPlayers.png" width="200px"/>][players-bazaar]
 [<Img src="./client/src/assets/players.png" width="200px"/>][players-bazaar]
 [<Img src="./client/src/assets/individualPlayer.png" width="200px"/>][players-bazaar]
