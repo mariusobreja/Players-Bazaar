@@ -10,11 +10,11 @@
 
 ## Introduction
 
-[<Img src="./client/src/assets/homePage.png" width="200px"/>][players-bazaar]
-[<Img src="./client/src/assets/featuredPlayers.png" width="200px"/>][players-bazaar]
-[<Img src="./client/src/assets/players.png" width="200px"/>][players-bazaar]
-[<Img src="./client/src/assets/individualPlayer.png" width="200px"/>][players-bazaar]
-[<Img src="./client/src/assets/basket.png" width="200px"/>][players-bazaar]
+[<Img src="./client/src/assets/homePage.png" width="400px"/>][players-bazaar]
+[<Img src="./client/src/assets/featuredPlayers.png" width="400px"/>][players-bazaar]
+[<Img src="./client/src/assets/players.png" width="400px"/>][players-bazaar]
+[<Img src="./client/src/assets/individualPlayer.png" width="400px"/>][players-bazaar]
+[<Img src="./client/src/assets/basket.png" width="400px"/>][players-bazaar]
 
 Players Bazaar aims to reinvent the traditional way of transferring football players. The web app allows you to browse featured players, browse the list of players, filter them, search for preferred players and sort by different values. The web app provides an easy, safe and secure way to checkout your shopping basket.
 
