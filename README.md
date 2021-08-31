@@ -11,7 +11,6 @@
 ## Introduction
 
 [<Img src="./client/src/assets/homePage.png" width="400px"/>][players-bazaar]
-[<Img src="./client/src/assets/featuredPlayers.png" width="400px"/>][players-bazaar]
 [<Img src="./client/src/assets/players.png" width="400px"/>][players-bazaar]
 [<Img src="./client/src/assets/individualPlayer.png" width="400px"/>][players-bazaar]
 [<Img src="./client/src/assets/basket.png" width="400px"/>][players-bazaar]
