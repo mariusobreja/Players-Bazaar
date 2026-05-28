@@ -1,19 +1,35 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Filters, PlayersList, Sort, PageHero } from '../components';
+import {
+  Filters,
+  PlayersList,
+  Sort,
+  PageHero,
+  Loading,
+  Error
+} from '../components';
+import { usePlayersContext } from '../context/playersContext';
 
 const PlayersPage = () => {
+  const { playersLoading: loading, playersError: error } = usePlayersContext();
+
   return (
     <main>
       <PageHero title='players/' />
       <Wrapper className='page'>
-        <div className='section-center players'>
-          <Filters />
-          <div>
-            <Sort />
-            <PlayersList />
+        {loading ? (
+          <Loading message='Loading players...' />
+        ) : error ? (
+          <Error message='We could not load players right now. Please refresh and try again.' />
+        ) : (
+          <div className='section-center players'>
+            <Filters />
+            <div>
+              <Sort />
+              <PlayersList />
+            </div>
           </div>
-        </div>
+        )}
       </Wrapper>
     </main>
   );

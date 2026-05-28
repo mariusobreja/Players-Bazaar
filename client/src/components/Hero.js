@@ -13,13 +13,11 @@ const Hero = () => {
           dream player!
         </h1>
         <p>
-          Finding the best player to fit your team has never been easier. NO
-          hidden agent fees! NO hidden information or medical records of the
-          players. YOU are 100% responsible of your next player purchase. Want
-          to build a dream team? Wait no more!
+          Browse featured players, filter by position and value, and build your
+          squad with a secure checkout flow powered by Auth0 and Stripe.
         </p>
         <Link to='/players' className='btn hero-btn'>
-          buy now
+          browse players
         </Link>
       </article>
       <article className='img-container'>

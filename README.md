@@ -1,93 +1,115 @@
-### Welcome to Players Bazaar!
+# Players Bazaar
 
-## Table of Contents
+A full-stack demo marketplace for browsing, filtering, and purchasing football players — built as a portfolio project to show end-to-end delivery across frontend, API, auth, and payments.
 
-1. Introduction
-2. Getting Started
-3. Deployment
-4. Features
-5. Future Features
-6. Technologies
+**Live app:** [https://players-bazaar-mariusobreja.netlify.app](https://players-bazaar-mariusobreja.netlify.app)  
+**Repository:** [https://github.com/mariusobreja/Players-Bazaar](https://github.com/mariusobreja/Players-Bazaar)
 
-## Introduction
+## Architecture
 
-[<Img src="./client/src/assets/homePage.png" width="400px"/>][players-bazaar]
-[<Img src="./client/src/assets/players.png" width="400px"/>][players-bazaar]
-[<Img src="./client/src/assets/individualPlayer.png" width="400px"/>][players-bazaar]
-[<Img src="./client/src/assets/basket.png" width="400px"/>][players-bazaar]
+```text
+Browser (React SPA)
+    │
+    ├─► Netlify  ── static frontend (client/)
+    │
+    └─► Railway  ── Express API (server/)
+            │
+            ├─► GET  /api/health
+            ├─► GET  /api/players
+            ├─► GET  /api/players/:id
+            └─► POST /api/checkout/intent  ──► Stripe (server-side secret)
 
-Players Bazaar aims to reinvent the traditional way of transferring football players. The web app allows you to browse featured players, browse the list of players, filter them, search for preferred players and sort by different values. The web app provides an easy, safe and secure way to checkout your shopping basket.
-
-With an easy-to-use UI and fluid sign-up process, Players Bazaar is a great way to buy football players!
-
-## Getting Started
-
-In order to run Players Bazaar it is necessary to follow following simple steps:
-
-1. Clone this repo & enter:
-
-```
-git clone https://github.com/mariusobreja/Players-Bazaar
-cd client
+Auth0 handles login in the browser (SPA).
+Stripe PaymentIntent is created on the backend only.
 ```
 
-2. Run `npm install` in `client` to install frontend dependencies.
-3. Copy `client/.env.example` to `client/.env` and add your keys.
-4. Run `npm start` in `client` to open the project.
-4. Clone the backend repo:
-5. Time to start buying some players!
-
-## Deployment
-
-Deployment target is **Netlify**.
-
-- Frontend root: `client`
-- Build command: `npm run build`
-- Publish directory: `build`
-- Functions directory: `functions`
-
-`client/netlify.toml` already includes this configuration.
-
-Environment variables required in Netlify:
-
-- `REACT_APP_AUTH_DOMAIN`
-- `REACT_APP_CLIENT_ID`
-- `REACT_APP_STRIPE_PUBLIC_KEY`
-- `STRIPE_SECRET_KEY`
+| Layer | Stack | Hosting |
+|-------|--------|---------|
+| Frontend | React 17, React Router, Styled Components, Auth0, Stripe.js | Netlify |
+| Backend | Node.js, Express, Zod | Railway |
+| Auth | Auth0 (SPA) | Auth0 cloud |
+| Payments | Stripe test mode | Stripe + Railway API |
 
 ## Features
 
-- Login & Register
-- Sign in through Google & other social media platforms
-- Browse players
-- Sort, filters and search players
-- Password encryption
-- Add players to shopping basket and safely checkout
-- Play your new players
+- Browse and filter players (search, category, sort, grid/list views)
+- Featured players on the home page
+- Shopping cart with local persistence
+- Auth0 login for checkout
+- Stripe test checkout via backend PaymentIntent API
 
-## Future Features
+## Project structure
 
-- Deploy
-- Delete players from DB once bought
-- Option to add players
-- Check and leave reviews
-- Add videos of players
+```text
+Players-Bazaar/
+├── client/          # React frontend (Netlify)
+│   ├── src/
+│   └── netlify.toml
+└── server/          # Express API (Railway)
+    └── src/
+```
 
-## Technologies
+## Local development
 
-- JavaScript
-- Netlify
-- React
-- React Router
-- Auth0
-- Styled Components
-- Stripe
-- Node.js
+### 1. Backend
 
+```bash
+cd server
+cp .env.example .env
+# Add STRIPE_SECRET_KEY and CLIENT_ORIGIN=http://localhost:3000
+npm install
+npm run dev
+```
+
+API runs at `http://localhost:4000`.
+
+### 2. Frontend
+
+```bash
+cd client
+cp .env.example .env
+# Add Auth0, Stripe public key, and:
+# REACT_APP_API_URL=http://localhost:4000
+npm install
+npm start
+```
+
+App runs at `http://localhost:3000`.
+
+## Environment variables
+
+### Frontend (`client/.env` → Netlify)
+
+| Variable | Purpose |
+|----------|---------|
+| `REACT_APP_API_URL` | Railway backend URL (no trailing slash) |
+| `REACT_APP_AUTH_DOMAIN` | Auth0 tenant domain |
+| `REACT_APP_CLIENT_ID` | Auth0 SPA client ID |
+| `REACT_APP_STRIPE_PUBLIC_KEY` | Stripe publishable key (`pk_test_...`) |
+| `SKIP_PREFLIGHT_CHECK` | `true` (CRA 4 + modern Node) |
+
+### Backend (`server/.env` → Railway)
+
+| Variable | Purpose |
+|----------|---------|
+| `STRIPE_SECRET_KEY` | Stripe secret key (`sk_test_...`) — never in frontend |
+| `CLIENT_ORIGIN` | Frontend origin for CORS (e.g. Netlify URL) |
+| `PORT` | Optional; Railway sets this automatically |
+
+## Deployment
+
+- **Frontend:** Netlify, base directory `client`, build `npm run build`, publish `build`
+- **Backend:** Railway, root directory `server`, start `npm start`, enable public domain
+
+After deploy, set Auth0 callback/logout/web origins to your Netlify URL (no trailing slash).
+
+## Roadmap
+
+- [ ] Player data from a public football API (via backend proxy)
+- [ ] PostgreSQL persistence
+- [ ] UI polish and accessibility pass
+- [ ] Order history after purchase
 
 ## Owner
 
-@mariusobreja
-
-
-[players-bazaar]: https://github.com/mariusobreja/Players-Bazaar
+[@mariusobreja](https://github.com/mariusobreja)
