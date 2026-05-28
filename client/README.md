@@ -1,6 +1,6 @@
 # Players Bazaar Client
 
-Frontend for the Players Bazaar marketplace app. It uses React 17, React Router v5, Auth0 authentication, and Stripe payments (via Netlify Functions).
+Frontend for the Players Bazaar marketplace app. It uses React 17, React Router v5, Auth0 authentication, and Stripe payments via the Railway backend API.
 
 ## Local Development
 
@@ -39,8 +39,7 @@ npm run build
   - `REACT_APP_AUTH_DOMAIN`
   - `REACT_APP_CLIENT_ID`
   - `REACT_APP_STRIPE_PUBLIC_KEY`
-  - `REACT_APP_API_URL`
-  - `STRIPE_SECRET_KEY`
+  - `REACT_APP_API_URL` (your Railway backend URL, no trailing slash)
 
-The payment endpoint is implemented in `functions/create-payment-intent.js`.
+Checkout uses `POST /api/checkout/intent` on the backend. Set `STRIPE_SECRET_KEY` on Railway, not Netlify.
 
