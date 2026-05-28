@@ -4,9 +4,10 @@
 
 1. Introduction
 2. Getting Started
-3. Features
-4. Future Features
-5. Technologies
+3. Deployment
+4. Features
+5. Future Features
+6. Technologies
 
 ## Introduction
 
@@ -30,10 +31,29 @@ git clone https://github.com/mariusobreja/Players-Bazaar
 cd client
 ```
 
-2. Run `npm install` to install project dependencies into your local repo.
-3. Run `npm start` to open the project.
+2. Run `npm install` in `client` to install frontend dependencies.
+3. Copy `client/.env.example` to `client/.env` and add your keys.
+4. Run `npm start` in `client` to open the project.
 4. Clone the backend repo:
 5. Time to start buying some players!
+
+## Deployment
+
+Deployment target is **Netlify**.
+
+- Frontend root: `client`
+- Build command: `npm run build`
+- Publish directory: `build`
+- Functions directory: `functions`
+
+`client/netlify.toml` already includes this configuration.
+
+Environment variables required in Netlify:
+
+- `REACT_APP_AUTH_DOMAIN`
+- `REACT_APP_CLIENT_ID`
+- `REACT_APP_STRIPE_PUBLIC_KEY`
+- `STRIPE_SECRET_KEY`
 
 ## Features
 

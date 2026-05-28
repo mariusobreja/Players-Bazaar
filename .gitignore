@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+client/node_modules/
+
+# build output
+build/
+dist/
+client/build/
+
+# local env files
+.env
+.env.*
+!.env.example
+client/.env
+client/.env.*
+!client/.env.example
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# system files
+.DS_Store
+
+# Local Netlify folder
+.netlify
