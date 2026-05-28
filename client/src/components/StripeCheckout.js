@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -12,28 +12,19 @@ import { useCartContext } from '../context/cartContext';
 import { useUserContext } from '../context/userContext';
 import { formatMarketValue } from '../utils/helpers';
 import { useHistory } from 'react-router-dom';
-import { singlePlayer } from '../utils/playersData';
-
-const discounted = singlePlayer[4].featured;
 
 const promise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
 const CheckoutForm = () => {
-  let { cart, total_amount, our_fee, clearCart } = useCartContext();
-
-  const newTotalAmount = () => {
-    if (discounted === true) {
-      return total_amount * 0.8;
-    }
-    return total_amount;
-  };
-  total_amount = newTotalAmount(total_amount);
+  const { cart, total_amount, our_fee, clearCart } = useCartContext();
+  const totalToPay = our_fee + total_amount;
 
   const { myUser } = useUserContext();
   const history = useHistory();
 
   // info from STRIPE
-  const [succeeded, setSucceded] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState('');
   const [disabled, setDisabled] = useState(true);
@@ -59,21 +50,28 @@ const CheckoutForm = () => {
     }
   };
 
-  const createPaymentIntent = async () => {
+  const createPaymentIntent = useCallback(async () => {
     try {
       const { data } = await axios.post(
-        '/.netlify/functions/create-payment-intent',
-        JSON.stringify({ cart, our_fee, total_amount })
+        `${API_BASE_URL}/api/checkout/intent`,
+        {
+          cart,
+          our_fee,
+          total_amount
+        }
       );
 
-      setClientSecret(data.clientSecret);
-    } catch (error) {}
-  };
+      setClientSecret(data?.data?.clientSecret || data?.clientSecret || '');
+    } catch (error) {
+      setError(
+        'Could not initialize payment. Please refresh and try again.'
+      );
+    }
+  }, [cart, our_fee, total_amount]);
 
   useEffect(() => {
     createPaymentIntent();
-    // eslint-disable-next-line
-  }, []);
+  }, [createPaymentIntent]);
 
   const handleChange = async (event) => {
     setDisabled(event.empty);
@@ -81,6 +79,11 @@ const CheckoutForm = () => {
   };
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+    if (!stripe || !elements || !clientSecret) {
+      setError('Payment is not ready yet. Please try again in a moment.');
+      return;
+    }
+
     setProcessing(true);
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
@@ -93,7 +96,7 @@ const CheckoutForm = () => {
     } else {
       setError(null);
       setProcessing(false);
-      setSucceded(true);
+      setSucceeded(true);
       setTimeout(() => {
         clearCart();
         history.push('/');
@@ -106,13 +109,13 @@ const CheckoutForm = () => {
       {succeeded ? (
         <article>
           <h4>Thank you</h4>
-          <h4>Your payment was succesful!</h4>
+          <h4>Your payment was successful!</h4>
           <h4>Redirecting to home page shortly</h4>
         </article>
       ) : (
         <article>
           <h4>Hello, {myUser && myUser.name}</h4>
-          <p>Your total is {formatMarketValue(our_fee + total_amount)}</p>
+          <p>Your total is {formatMarketValue(totalToPay)}</p>
           <p>Test Card Number for payment : 4242 4242 4242 4242</p>
         </article>
       )}
@@ -132,7 +135,7 @@ const CheckoutForm = () => {
             {error}
           </div>
         )}
-        {/* Show a succes message upon completion */}
+        {/* Show a success message upon completion */}
         <p className={succeeded ? 'result-message' : 'result-message hidden'}>
           Payment succeeded, see the result in your
           <a href={`https://dashboard.stripe.com/test/payments`}>

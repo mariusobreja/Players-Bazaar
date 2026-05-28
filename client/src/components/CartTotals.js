@@ -4,7 +4,6 @@ import { useCartContext } from '../context/cartContext';
 import { useUserContext } from '../context/userContext';
 import { formatMarketValue } from '../utils/helpers';
 import { Link } from 'react-router-dom';
-import { singlePlayer } from '../utils/playersData';
 
 // const discounted = singlePlayer[4].featured;
 const CartTotals = () => {

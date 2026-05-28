@@ -25,17 +25,21 @@ const SinglePlayerPage = () => {
 
   useEffect(() => {
     fetchSinglePlayer(id);
-    // eslint-disable-next-line
-  }, [id]);
+  }, [fetchSinglePlayer, id]);
 
   useEffect(() => {
+    let timeoutId;
     if (error) {
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         history.push('/');
       }, 3000);
     }
-    // eslint-disable-next-line
-  }, [error]);
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [error, history]);
 
   if (loading) {
     return <Loading />;
@@ -61,7 +65,7 @@ const SinglePlayerPage = () => {
   return (
     <Wrapper>
       <PageHero title={name} player />
-      <div className='sectin section-center page'>
+      <div className='section section-center page'>
         <Link to='/players' className='btn'>
           back to players
         </Link>
