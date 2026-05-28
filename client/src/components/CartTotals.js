@@ -5,78 +5,83 @@ import { useUserContext } from '../context/userContext';
 import { formatMarketValue } from '../utils/helpers';
 import { Link } from 'react-router-dom';
 
-// const discounted = singlePlayer[4].featured;
 const CartTotals = () => {
-  let { total_amount, our_fee } = useCartContext();
-
+  const { total_amount, our_fee } = useCartContext();
   const { myUser, loginWithRedirect } = useUserContext();
-  // const newTotalAmount = () => {
-  // //   if (discounted === true) {
-  // //     return total_amount * 0.8;
-  // //   }
-  // //   return total_amount;
-  // // };
 
-  // total_amount = newTotalAmount(total_amount);
   return (
     <Wrapper>
-      <div>
-        <article>
-          <h5>
-            subtotal : <span>{formatMarketValue(total_amount)}</span>
-          </h5>
-          <p>
-            our fee : <span>{formatMarketValue(our_fee)}</span>
-          </p>
-          <hr />
-          <h4>
-            order total :{' '}
-            <span>{formatMarketValue(total_amount + our_fee)}</span>
-          </h4>
-        </article>
+      <article>
+        <h5 className='row'>
+          <span>Subtotal</span>
+          <span>{formatMarketValue(total_amount)}</span>
+        </h5>
+        <p className='row'>
+          <span>Our fee</span>
+          <span>{formatMarketValue(our_fee)}</span>
+        </p>
+        <hr />
+        <h4 className='row total'>
+          <span>Order total</span>
+          <span>{formatMarketValue(total_amount + our_fee)}</span>
+        </h4>
         {myUser ? (
           <Link to='/checkout' className='btn'>
-            proceed to checkout
+            Proceed to checkout
           </Link>
         ) : (
           <button type='button' className='btn' onClick={loginWithRedirect}>
-            login
+            Log in to checkout
           </button>
         )}
-      </div>
+      </article>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
-  margin-top: 3rem;
-  display: flex;
-  justify-content: center;
   article {
+    background: var(--clr-white);
     border: 1px solid var(--clr-grey-8);
-    border-radius: var(--radius);
-    padding: 1.5rem 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    padding: 1.75rem;
   }
-  h4,
-  h5,
-  p {
-    display: grid;
-    grid-template-columns: 200px 1fr;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    color: var(--clr-grey-4);
+
+    span:last-child {
+      font-weight: 600;
+      color: var(--clr-grey-2);
+    }
   }
-  p {
-    text-transform: capitalize;
+
+  .total {
+    margin-top: 0.5rem;
+    margin-bottom: 1.25rem;
+    font-size: 1.1rem;
+    color: var(--clr-grey-1);
+
+    span:last-child {
+      color: var(--clr-primary-4);
+      font-size: 1.25rem;
+    }
   }
-  h4 {
-    margin-top: 2rem;
+
+  hr {
+    margin: 1rem 0;
   }
-  @media (min-width: 776px) {
-    justify-content: flex-end;
-  }
+
   .btn {
     width: 100%;
-    margin-top: 1rem;
-    text-align: center;
-    font-weight: 700;
+    margin-top: 0.5rem;
   }
 `;
 

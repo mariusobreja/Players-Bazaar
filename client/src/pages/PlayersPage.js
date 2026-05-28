@@ -36,14 +36,18 @@ const PlayersPage = () => {
 };
 
 const Wrapper = styled.div`
+  background: var(--clr-grey-9);
+
   .players {
     display: grid;
-    gap: 3rem 1.5rem;
-    margin: 4rem auto;
+    gap: 2rem;
+    margin: 2rem auto 3rem;
   }
+
   @media (min-width: 768px) {
     .players {
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 260px 1fr;
+      align-items: start;
     }
   }
 `;

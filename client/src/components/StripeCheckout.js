@@ -23,34 +23,49 @@ const CheckoutForm = () => {
   const { myUser } = useUserContext();
   const history = useHistory();
 
-  // info from STRIPE
   const [succeeded, setSucceeded] = useState(false);
-  const [error, setError] = useState(null);
-  const [processing, setProcessing] = useState('');
-  const [disabled, setDisabled] = useState(true);
+  const [setupError, setSetupError] = useState(null);
+  const [cardError, setCardError] = useState(null);
+  const [processing, setProcessing] = useState(false);
+  const [cardComplete, setCardComplete] = useState(false);
   const [clientSecret, setClientSecret] = useState('');
+  const [intentLoading, setIntentLoading] = useState(true);
   const stripe = useStripe();
   const elements = useElements();
+
+  const isPaymentReady =
+    Boolean(stripe && elements && clientSecret) && !intentLoading;
 
   const cardStyle = {
     style: {
       base: {
-        color: '#32325d',
-        fontFamily: 'Arial, sans-serif',
+        color: '#1e293b',
+        fontFamily: "'DM Sans', sans-serif",
         fontSmoothing: 'antialiased',
         fontSize: '16px',
         '::placeholder': {
-          color: '#32325d'
+          color: '#94a3b8'
         }
       },
       invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a'
+        color: '#dc2626',
+        iconColor: '#dc2626'
       }
     }
   };
 
   const createPaymentIntent = useCallback(async () => {
+    if (!API_BASE_URL) {
+      setSetupError(
+        'API URL is not configured. Add REACT_APP_API_URL to your .env file and restart the dev server.'
+      );
+      setIntentLoading(false);
+      return;
+    }
+
+    setIntentLoading(true);
+    setSetupError(null);
+
     try {
       const { data } = await axios.post(
         `${API_BASE_URL}/api/checkout/intent`,
@@ -61,11 +76,22 @@ const CheckoutForm = () => {
         }
       );
 
-      setClientSecret(data?.data?.clientSecret || data?.clientSecret || '');
-    } catch (error) {
-      setError(
-        'Could not initialize payment. Please refresh and try again.'
-      );
+      const secret =
+        data?.data?.clientSecret || data?.clientSecret || '';
+
+      if (!secret) {
+        setSetupError('Could not start payment. Please refresh and try again.');
+        return;
+      }
+
+      setClientSecret(secret);
+    } catch (err) {
+      const message =
+        err.response?.data?.message ||
+        'Could not connect to the payment server. Is the API running?';
+      setSetupError(message);
+    } finally {
+      setIntentLoading(false);
     }
   }, [cart, our_fee, total_amount]);
 
@@ -73,28 +99,40 @@ const CheckoutForm = () => {
     createPaymentIntent();
   }, [createPaymentIntent]);
 
-  const handleChange = async (event) => {
-    setDisabled(event.empty);
-    setError(event.error ? event.error.message : '');
+  const handleChange = (event) => {
+    setCardComplete(event.complete);
+    setCardError(event.error ? event.error.message : null);
   };
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
-    if (!stripe || !elements || !clientSecret) {
-      setError('Payment is not ready yet. Please try again in a moment.');
+
+    if (intentLoading) {
+      return;
+    }
+
+    if (!isPaymentReady) {
+      setSetupError(
+        setupError ||
+          'Payment is still loading. Wait a moment, then try again.'
+      );
       return;
     }
 
     setProcessing(true);
+    setSetupError(null);
+
     const payload = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
         card: elements.getElement(CardElement)
       }
     });
+
     if (payload.error) {
-      setError(`Payment failed ${payload.error.message}`);
+      setCardError(payload.error.message);
       setProcessing(false);
     } else {
-      setError(null);
+      setCardError(null);
       setProcessing(false);
       setSucceeded(true);
       setTimeout(() => {
@@ -104,43 +142,67 @@ const CheckoutForm = () => {
     }
   };
 
+  const displayError = setupError || cardError;
+  const payDisabled =
+    processing || succeeded || intentLoading || !cardComplete || !isPaymentReady;
+
   return (
-    <div>
+    <div className='checkout-body'>
       {succeeded ? (
-        <article>
-          <h4>Thank you</h4>
-          <h4>Your payment was successful!</h4>
-          <h4>Redirecting to home page shortly</h4>
+        <article className='summary success'>
+          <h4>Thank you!</h4>
+          <p>Your payment was successful. Redirecting to home shortly…</p>
         </article>
       ) : (
-        <article>
+        <article className='summary'>
+          <p className='eyebrow'>Secure checkout</p>
           <h4>Hello, {myUser && myUser.name}</h4>
-          <p>Your total is {formatMarketValue(totalToPay)}</p>
-          <p>Test Card Number for payment : 4242 4242 4242 4242</p>
+          <p className='total-line'>
+            Total due: <strong>{formatMarketValue(totalToPay)}</strong>
+          </p>
+          <p className='hint'>
+            Test card: <code>4242 4242 4242 4242</code>
+          </p>
         </article>
       )}
       <form id='payment-form' onSubmit={handleSubmit}>
+        {intentLoading && (
+          <p className='status loading' role='status'>
+            Preparing secure payment…
+          </p>
+        )}
         <CardElement
           id='card-element'
           options={cardStyle}
           onChange={handleChange}
         />
-        <button disabled={processing || disabled || succeeded} id='submit'>
+        <button
+          type='submit'
+          disabled={payDisabled}
+          id='submit'
+          aria-busy={processing || intentLoading}
+        >
           <span id='button-text'>
-            {processing ? <div className='spinner' id='spinner'></div> : 'Pay'}
+            {processing ? (
+              <div className='spinner' id='spinner'></div>
+            ) : intentLoading ? (
+              'Loading…'
+            ) : (
+              'Pay'
+            )}
           </span>
         </button>
-        {error && (
+        {displayError && (
           <div className='card-error' role='alert'>
-            {error}
+            {displayError}
           </div>
         )}
-        {/* Show a success message upon completion */}
         <p className={succeeded ? 'result-message' : 'result-message hidden'}>
           Payment succeeded, see the result in your
-          <a href={`https://dashboard.stripe.com/test/payments`}>
+          <a href='https://dashboard.stripe.com/test/payments'>
+            {' '}
             Stripe dashboard.
-          </a>
+          </a>{' '}
           Refresh the page to pay again
         </p>
       </form>
@@ -159,81 +221,121 @@ const StripeCheckout = () => {
 };
 
 const Wrapper = styled.section`
+  max-width: 28rem;
+  margin: 2rem auto 0;
+
+  .checkout-body {
+    background: var(--clr-white);
+    border: 1px solid var(--clr-grey-8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+  }
+
+  .summary {
+    padding: 1.75rem 1.75rem 0;
+
+    &.success h4 {
+      color: var(--clr-primary-4);
+    }
+  }
+
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--clr-primary-4);
+    margin-bottom: 0.35rem;
+  }
+
+  .total-line {
+    margin: 0.75rem 0;
+    color: var(--clr-grey-3);
+
+    strong {
+      color: var(--clr-grey-1);
+    }
+  }
+
+  .hint {
+    font-size: 0.85rem;
+    color: var(--clr-grey-5);
+    margin-bottom: 0;
+
+    code {
+      font-size: 0.8rem;
+      padding: 0.15rem 0.4rem;
+      background: var(--clr-grey-9);
+      border-radius: var(--radius);
+    }
+  }
+
   form {
-    width: 30vw;
-    align-self: center;
-    box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
-      0px 2px 5px 0px rgba(50, 50, 93, 0.1),
-      0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
-    border-radius: 7px;
-    padding: 40px;
+    padding: 1.5rem 1.75rem 1.75rem;
   }
-  input {
-    border-radius: 6px;
-    margin-bottom: 6px;
-    padding: 12px;
-    border: 1px solid rgba(50, 50, 93, 0.1);
-    max-height: 44px;
-    font-size: 16px;
-    width: 100%;
-    background: white;
-    box-sizing: border-box;
+
+  .status.loading {
+    font-size: 0.9rem;
+    color: var(--clr-grey-5);
+    margin-bottom: 1rem;
+    text-align: center;
   }
+
   .result-message {
-    line-height: 22px;
-    font-size: 16px;
+    line-height: 1.5;
+    font-size: 0.9rem;
+    margin-top: 1rem;
   }
+
   .result-message a {
-    color: rgb(89, 111, 214);
+    color: var(--clr-primary-4);
     font-weight: 600;
-    text-decoration: none;
   }
+
   .hidden {
     display: none;
   }
-  #card-error {
-    color: rgb(105, 115, 134);
-    font-size: 16px;
-    line-height: 20px;
-    margin-top: 12px;
+
+  .card-error {
+    color: var(--clr-red-dark);
+    font-size: 0.9rem;
+    margin-top: 0.75rem;
     text-align: center;
   }
+
   #card-element {
-    border-radius: 4px 4px 0 0;
-    padding: 12px;
-    border: 1px solid rgba(50, 50, 93, 0.1);
-    max-height: 44px;
-    width: 100%;
-    background: white;
-    box-sizing: border-box;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--clr-grey-8);
+    border-radius: var(--radius);
+    background: var(--clr-grey-10);
+    margin-bottom: 1rem;
   }
-  #payment-request-button {
-    margin-bottom: 32px;
-  }
-  /* Buttons and links */
-  button {
-    background: #5469d4;
-    font-family: Arial, sans-serif;
-    color: #ffffff;
-    border-radius: 0 0 4px 4px;
+
+  #submit {
+    font-family: var(--font-sans);
+    background: linear-gradient(135deg, var(--clr-primary-4), var(--clr-primary-5));
+    color: var(--clr-white);
     border: 0;
-    padding: 12px 16px;
-    font-size: 16px;
+    border-radius: 999px;
+    padding: 0.85rem 1.25rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
-    display: block;
-    transition: all 0.2s ease;
-    box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
     width: 100%;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+    transition: var(--transition);
   }
-  button:hover {
-    filter: contrast(115%);
+
+  #submit:hover:not(:disabled) {
+    transform: translateY(-1px);
   }
-  button:disabled {
-    opacity: 0.5;
-    cursor: default;
+
+  #submit:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
   }
-  /* spinner/processing state, errors */
+
   .spinner,
   .spinner:before,
   .spinner:after {
@@ -248,8 +350,6 @@ const Wrapper = styled.section`
     width: 20px;
     height: 20px;
     box-shadow: inset 0 0 0 2px;
-    -webkit-transform: translateZ(0);
-    -ms-transform: translateZ(0);
     transform: translateZ(0);
   }
   .spinner:before,
@@ -260,40 +360,29 @@ const Wrapper = styled.section`
   .spinner:before {
     width: 10.4px;
     height: 20.4px;
-    background: #5469d4;
+    background: var(--clr-primary-5);
     border-radius: 20.4px 0 0 20.4px;
     top: -0.2px;
     left: -0.2px;
-    -webkit-transform-origin: 10.4px 10.2px;
     transform-origin: 10.4px 10.2px;
-    -webkit-animation: loading 2s infinite ease 1.5s;
     animation: loading 2s infinite ease 1.5s;
   }
   .spinner:after {
     width: 10.4px;
     height: 10.2px;
-    background: #5469d4;
+    background: var(--clr-primary-5);
     border-radius: 0 10.2px 10.2px 0;
     top: -0.1px;
     left: 10.2px;
-    -webkit-transform-origin: 0px 10.2px;
     transform-origin: 0px 10.2px;
-    -webkit-animation: loading 2s infinite ease;
     animation: loading 2s infinite ease;
   }
   @keyframes loading {
     0% {
-      -webkit-transform: rotate(0deg);
       transform: rotate(0deg);
     }
     100% {
-      -webkit-transform: rotate(360deg);
       transform: rotate(360deg);
-    }
-  }
-  @media only screen and (max-width: 600px) {
-    form {
-      width: 80vw;
     }
   }
 `;

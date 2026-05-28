@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import logo from '../assets/B.svg';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FaBars } from 'react-icons/fa';
 import { links } from '../utils/constants';
 import CartLoginButtons from './CartLoginButtons';
@@ -11,14 +11,20 @@ import { useUserContext } from '../context/userContext';
 const Navbar = () => {
   const { openSidebar } = usePlayersContext();
   const { myUser } = useUserContext();
+
   return (
     <NavContainer>
       <div className='nav-center'>
         <div className='nav-header'>
-          <Link to='/'>
-            <img src={logo} alt={'players bazaar'} />
+          <Link to='/' className='logo-link'>
+            <img src={logo} alt='Players Bazaar' />
           </Link>
-          <button type='button' className='nav-toggle' onClick={openSidebar}>
+          <button
+            type='button'
+            className='nav-toggle'
+            onClick={openSidebar}
+            aria-label='Open menu'
+          >
             <FaBars />
           </button>
         </div>
@@ -27,13 +33,17 @@ const Navbar = () => {
             const { id, text, url } = link;
             return (
               <li key={id}>
-                <Link to={url}>{text}</Link>
+                <NavLink to={url} activeClassName='active' exact={url === '/'}>
+                  {text}
+                </NavLink>
               </li>
             );
           })}
           {myUser && (
             <li>
-              <Link to='/checkout'>checkout</Link>
+              <NavLink to='/checkout' activeClassName='active'>
+                Checkout
+              </NavLink>
             </li>
           )}
         </ul>
@@ -44,68 +54,119 @@ const Navbar = () => {
 };
 
 const NavContainer = styled.nav`
-  height: 5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 4.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--clr-grey-8);
+  box-shadow: var(--light-shadow);
 
   .nav-center {
-    width: 90vw;
+    width: min(92vw, var(--max-width));
     margin: 0 auto;
-    max-width: var(--max-width);
   }
+
   .nav-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     img {
-      width: 175px;
-      margin-left: -15px;
+      width: 140px;
+      height: auto;
     }
   }
+
   .nav-toggle {
-    background: transparent;
-    border: transparent;
-    color: var(--clr-primary-5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    background: var(--clr-grey-10);
+    border: 1px solid var(--clr-grey-8);
+    border-radius: var(--radius);
+    color: var(--clr-grey-2);
     cursor: pointer;
+    transition: var(--transition);
+
+    &:hover {
+      background: var(--clr-grey-9);
+      color: var(--clr-primary-4);
+    }
+
     svg {
-      font-size: 2rem;
+      font-size: 1.25rem;
     }
   }
+
   .nav-links {
-    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
+
+  .nav-links,
   .cart-btn-wrapper {
     display: none;
   }
+
   @media (min-width: 992px) {
     .nav-toggle {
       display: none;
     }
-    .nav-center {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      align-items: center;
+
+    .nav-header {
+      justify-content: flex-start;
     }
+
+    .nav-center {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
     .nav-links {
       display: flex;
+      flex: 1;
       justify-content: center;
-      li {
-        margin: 0 0.5rem;
-      }
+      gap: 0.25rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
       a {
-        color: var(--clr-grey-3);
-        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--clr-grey-4);
+        border-radius: 999px;
+        transition: var(--transition);
         text-transform: capitalize;
-        letter-spacing: var(--spacing);
-        padding: 0.5rem;
+
         &:hover {
-          border-bottom: 2px solid var(--clr-primary-7);
+          color: var(--clr-grey-1);
+          background: var(--clr-grey-10);
+        }
+
+        &.active {
+          color: var(--clr-primary-3);
+          background: var(--clr-primary-10);
+          font-weight: 600;
         }
       }
     }
+
     .cart-btn-wrapper {
-      display: grid;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
     }
   }
 `;

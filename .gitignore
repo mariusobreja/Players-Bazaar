@@ -14,6 +14,7 @@ client/build/
 client/.env
 client/.env.*
 !client/.env.example
+!client/.env.development
 
 # logs
 npm-debug.log*

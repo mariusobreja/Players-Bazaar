@@ -1,107 +1,134 @@
 import React from 'react';
 import styled from 'styled-components';
 import { formatMarketValue } from '../utils/helpers';
-import { FaSearch } from 'react-icons/fa';
+import { FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-// import indexImage from '../assets/indexPic';
 
-const Player = ({
-  player,
-  positions,
-  name,
-  marketValue,
-  id,
-  image,
-  featured
-}) => {
+const Player = ({ positions, name, marketValue, id, image, featured }) => {
   return (
     <Wrapper>
-      {/* <div>
-        <img
-          src='https://pngtree.com/freepng/tattered-brazilian-flag_6168303.html'
-          alt='image23'
-        />
-      </div> */}
-      <header>
-        <h3>{name}</h3>
-      </header>
-      <div className='container'>
+      <div className='media'>
         <img src={image} alt={name} />
-        <Link to={`/players/${id}`} className='link'>
-          <FaSearch />
+        {featured && <span className='badge'>Featured</span>}
+        <Link to={`/players/${id}`} className='overlay' aria-label={`View ${name}`}>
+          <FaArrowRight />
         </Link>
       </div>
-      <footer>
-        <h5>{positions}</h5>
-        {featured === true ? (
-          <p>
-            <del>{formatMarketValue(marketValue)}</del>
-            <br />
-            <ins>{formatMarketValue(marketValue * 0.8)}</ins>
-          </p>
-        ) : (
-          <p>{formatMarketValue(marketValue)}</p>
-        )}
-      </footer>
+      <div className='body'>
+        <h3>{name}</h3>
+        <p className='position'>{positions}</p>
+        <div className='price'>
+          {featured ? (
+            <>
+              <span className='old'>{formatMarketValue(marketValue)}</span>
+              <span className='current'>
+                {formatMarketValue(marketValue * 0.8)}
+              </span>
+            </>
+          ) : (
+            <span className='current'>{formatMarketValue(marketValue)}</span>
+          )}
+        </div>
+      </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.article`
-  .container {
-    position: relative;
-    background: var(--clr-black);
-    border-radius: var(--radius);
-  }
-  img {
-    justify-content: center;
-    width: 100%;
-    display: block;
-    object-fit: cover;
-    border-radius: var(--radius);
-    transition: var(--transition);
-  }
-  .link {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--clr-primary-5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    transition: var(--transition);
-    opacity: 0;
-    cursor: pointer;
-    svg {
-      font-size: 1.25rem;
-      color: var(--clr-white);
-    }
-  }
-  .container:hover img {
-    opacity: 0.5;
-  }
-  .container:hover .link {
-    opacity: 1;
-  }
-  footer {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  footer h5,
-  footer p {
-    margin-bottom: 0;
-    font-weight: bold;
+  background: var(--clr-white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--clr-grey-8);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+  transition: var(--transition);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--dark-shadow);
   }
 
-  footer p {
-    color: var(--clr-primary-5);
-    letter-spacing: var(--spacing);
+  .media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--clr-grey-9);
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.05);
+  }
+
+  .badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--clr-white);
+    background: var(--clr-primary-4);
+    border-radius: 999px;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(15, 23, 42, 0.45);
+    opacity: 0;
+    transition: var(--transition);
+    color: var(--clr-white);
+    font-size: 1.5rem;
+  }
+
+  &:hover .overlay {
+    opacity: 1;
+  }
+
+  .body {
+    padding: 1.1rem 1.15rem 1.25rem;
+  }
+
+  h3 {
+    margin-bottom: 0.25rem;
+    font-size: 1.05rem;
+    line-height: 1.3;
+  }
+
+  .position {
+    margin-bottom: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--clr-grey-5);
+  }
+
+  .price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .old {
+    font-size: 0.8rem;
+    color: var(--clr-grey-5);
+    text-decoration: line-through;
+  }
+
+  .current {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--clr-primary-4);
   }
 `;
+
 export default Player;

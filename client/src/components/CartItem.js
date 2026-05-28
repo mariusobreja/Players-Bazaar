@@ -68,6 +68,16 @@ const CartItem = ({ id, image, name, price, amount, featured, fullPrice }) => {
 };
 
 const Wrapper = styled.article`
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--clr-grey-8);
+
+  &:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
   .subtotal {
     display: none;
   }

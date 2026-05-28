@@ -21,15 +21,16 @@ const Wrapper = styled.section`
 
   .players-container {
     display: grid;
-    gap: 2rem 1.5rem;
+    gap: 1.5rem;
   }
 
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     .players-container {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-  @media (min-width: 1170px) {
+
+  @media (min-width: 1100px) {
     .players-container {
       grid-template-columns: repeat(3, 1fr);
     }

@@ -27,7 +27,9 @@ const Services = () => {
             const { id, icon, title, text } = service;
             return (
               <article key={id} className='service'>
-                <span className='icon'>{icon}</span>
+                <span className='icon' aria-hidden='true'>
+                  {icon}
+                </span>
                 <h4>{title}</h4>
                 <p>{text}</p>
               </article>
@@ -40,48 +42,62 @@ const Services = () => {
 };
 
 const Wrapper = styled.section`
-  h3,
-  h4 {
-    color: var(--clr-primary-1);
-  }
-  padding: 5rem 0;
-
-  background: var(--clr-primary-10);
+  padding: 4rem 0;
+  background: var(--clr-grey-10);
 
   .header h3 {
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
   }
-  p {
-    margin-bottom: 0;
-    line-height: 1.8;
-    color: var(--clr-primary-3);
+
+  .header p {
+    line-height: 1.75;
+    color: var(--clr-grey-4);
   }
+
   .services-center {
-    margin-top: 4rem;
+    margin-top: 3rem;
     display: grid;
-    gap: 2.5rem;
+    gap: 1.5rem;
   }
+
   .service {
-    background: var(--clr-primary-7);
     text-align: center;
-    padding: 2.5rem 2rem;
-    border-radius: var(--radius);
+    padding: 2rem 1.5rem;
+    background: var(--clr-white);
+    border: 1px solid var(--clr-grey-8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--dark-shadow);
+    }
+
+    h4 {
+      margin-bottom: 0.75rem;
+      color: var(--clr-grey-1);
+    }
+
     p {
-      color: var(--clr-primary-2);
+      margin: 0;
+      font-size: 0.95rem;
+      color: var(--clr-grey-5);
     }
   }
-  span {
-    width: 4rem;
-    height: 4rem;
+
+  span.icon {
+    width: 3.5rem;
+    height: 3.5rem;
     display: grid;
-    margin: 0 auto;
+    margin: 0 auto 1rem;
     place-items: center;
-    margin-bottom: 1rem;
-    border-radius: 50%;
+    border-radius: var(--radius);
     background: var(--clr-primary-10);
-    color: var(--clr-primary-1);
+    color: var(--clr-primary-4);
+
     svg {
-      font-size: 2rem;
+      font-size: 1.75rem;
     }
   }
   @media (min-width: 992px) {
@@ -92,13 +108,15 @@ const Wrapper = styled.section`
   }
   @media (min-width: 576px) {
     .services-center {
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
   }
-  @media (min-width: 1280px) {
-    padding: 0;
-    .section-center {
-      transform: translateY(5rem);
+
+  @media (min-width: 992px) {
+    padding: 5rem 0;
+
+    .services-center {
+      grid-template-columns: repeat(3, 1fr);
     }
   }
 `;

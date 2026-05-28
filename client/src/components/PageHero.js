@@ -6,30 +6,54 @@ const PageHero = ({ title, player }) => {
   return (
     <Wrapper>
       <div className='section-center'>
-        <h3>
+        <nav className='breadcrumbs' aria-label='Breadcrumb'>
           <Link to='/'>Home</Link>
-          {player && <Link to='/players'>/Players</Link>}/{title}
-        </h3>
+          {player && (
+            <>
+              <span className='sep'>/</span>
+              <Link to='/players'>Players</Link>
+            </>
+          )}
+          <span className='sep'>/</span>
+          <span className='current'>{title}</span>
+        </nav>
       </div>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.section`
-  background: var(--clr-primary-10);
   width: 100%;
-  min-height: 20vh;
-  display: flex;
-  align-items: center;
+  padding: 1.25rem 0;
+  background: linear-gradient(135deg, var(--clr-grey-1) 0%, #1e3a5f 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 
-  color: var(--clr-primary-1);
-  a {
-    color: var(--clr-primary-3);
-    padding: 0.5rem;
-    transition: var(--transition);
+  .breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.9rem;
+    font-weight: 500;
   }
-  a:hover {
-    color: var(--clr-primary-1);
+
+  a {
+    color: var(--clr-grey-7);
+    transition: var(--transition);
+
+    &:hover {
+      color: var(--clr-primary-6);
+    }
+  }
+
+  .sep {
+    color: var(--clr-grey-5);
+    user-select: none;
+  }
+
+  .current {
+    color: var(--clr-white);
+    text-transform: capitalize;
   }
 `;
 

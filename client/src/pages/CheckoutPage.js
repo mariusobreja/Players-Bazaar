@@ -9,12 +9,13 @@ const CheckoutPage = () => {
   return (
     <main>
       <PageHero title='checkout' />
-      <Wrapper className='page'>
+      <Wrapper className='page section-center'>
         {cart.length < 1 ? (
-          <div className='empty'>
-            <h2>your cart is empty</h2>
+          <div className='empty-card'>
+            <h2>Nothing to checkout yet</h2>
+            <p>Add players to your cart before completing payment.</p>
             <Link to='/players' className='btn'>
-              fill it
+              Browse players
             </Link>
           </div>
         ) : (
@@ -26,11 +27,28 @@ const CheckoutPage = () => {
 };
 
 const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .empty {
+  background: var(--clr-grey-9);
+  padding-bottom: 3rem;
+
+  .empty-card {
+    max-width: 28rem;
+    margin: 2rem auto 0;
+    padding: 3rem 2rem;
     text-align: center;
+    background: var(--clr-white);
+    border: 1px solid var(--clr-grey-8);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--card-shadow);
+
+    h2 {
+      text-transform: none;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      color: var(--clr-grey-5);
+    }
   }
 `;
 

@@ -12,39 +12,44 @@ const Sort = () => {
     sort,
     updateSort
   } = useFilterContext();
+
   return (
     <Wrapper>
-      <div className='btn-container'>
-        <button
-          type='button'
-          className={`${gridView ? 'active' : null}`}
-          onClick={setGridView}
-        >
-          <BsFillGridFill />
-        </button>
-        <button
-          type='button'
-          className={`${!gridView ? 'active' : null}`}
-          onClick={setListView}
-        >
-          <BsList />
-        </button>
+      <div className='toolbar-left'>
+        <div className='btn-container'>
+          <button
+            type='button'
+            className={gridView ? 'active' : ''}
+            onClick={setGridView}
+            aria-label='Grid view'
+          >
+            <BsFillGridFill />
+          </button>
+          <button
+            type='button'
+            className={!gridView ? 'active' : ''}
+            onClick={setListView}
+            aria-label='List view'
+          >
+            <BsList />
+          </button>
+        </div>
+        <p className='count'>
+          <strong>{players.length}</strong> players found
+        </p>
       </div>
-      <p>{players.length} players found</p>
-      <hr />
-      <form>
-        <label htmlFor='sort'>sort by</label>
+      <form className='sort-form'>
+        <label htmlFor='sort'>Sort by</label>
         <select
           name='sort'
           id='sort'
-          className='sort-input'
           value={sort}
           onChange={updateSort}
         >
           <option value='marketValue-lowest'>Value (lowest)</option>
           <option value='marketValue-highest'>Value (highest)</option>
-          <option value='name-a'>Name (a-z)</option>
-          <option value='name-z'>name (z-a)</option>
+          <option value='name-a'>Name (A–Z)</option>
+          <option value='name-z'>Name (Z–A)</option>
         </select>
       </form>
     </Wrapper>
@@ -52,65 +57,89 @@ const Sort = () => {
 };
 
 const Wrapper = styled.section`
-  display: grid;
-  grid-template-columns: auto auto 1fr auto;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  margin-bottom: 2rem;
-  column-gap: 2rem;
-  @media (max-width: 576px) {
-    display: grid;
-    grid-template-columns: 1fr;
-    row-gap: 0.75rem;
-    .btn-container {
-      width: 50px;
-    }
-    label {
-      display: inline-block;
-      margin-right: 0.5rem;
-    }
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--clr-white);
+  border: 1px solid var(--clr-grey-8);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--light-shadow);
+
+  .toolbar-left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
   }
-  @media (min-width: 768px) {
-    column-gap: 2rem;
-  }
-  p {
-    text-transform: capitalize;
-    margin-bottom: 0;
+
+  .count {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--clr-grey-4);
+
+    strong {
+      color: var(--clr-grey-1);
+    }
   }
 
   .btn-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: 0.5rem;
+    display: flex;
+    gap: 0.35rem;
+    padding: 0.2rem;
+    background: var(--clr-grey-10);
+    border-radius: var(--radius);
+
     button {
-      background: transparent;
-      border: 1px solid var(--clr-black);
-      color: var(--clr-black);
-      width: 1.5rem;
-      border-radius: var(--radius);
-      height: 1.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      background: transparent;
+      border: none;
+      border-radius: calc(var(--radius) - 2px);
+      color: var(--clr-grey-5);
       cursor: pointer;
+      transition: var(--transition);
+
       svg {
-        font-size: 1rem;
+        font-size: 1.1rem;
       }
-    }
-    .active {
-      background: var(--clr-black);
-      color: var(--clr-white);
+
+      &.active {
+        background: var(--clr-white);
+        color: var(--clr-grey-1);
+        box-shadow: var(--light-shadow);
+      }
     }
   }
 
-  .sort-input {
-    border-color: transparent;
-    font-size: 1rem;
-    text-transform: capitalize;
-    padding: 0.25rem 0.5rem;
-  }
-  label {
-    font-size: 1rem;
-    text-transform: capitalize;
+  .sort-form {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+
+    label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--clr-grey-5);
+      white-space: nowrap;
+    }
+
+    select {
+      padding: 0.5rem 2rem 0.5rem 0.75rem;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--clr-grey-2);
+      background: var(--clr-grey-10);
+      border: 1px solid var(--clr-grey-8);
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
   }
 `;
 

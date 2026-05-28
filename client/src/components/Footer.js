@@ -1,38 +1,31 @@
 import React from 'react';
 import styled from 'styled-components';
+
 const Footer = () => {
   return (
     <Wrapper>
-      <h5>
-        &copy; {new Date().getFullYear()}
-        <span> Players Bazaar </span>
-      </h5>
-      <h5>All rights reserved</h5>
+      <p>
+        &copy; {new Date().getFullYear()}{' '}
+        <span>Players Bazaar</span> · Portfolio demo · All rights reserved
+      </p>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.footer`
-  height: 5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: var(--clr-black);
+  padding: 1.75rem 1.5rem;
+  background: var(--clr-grey-1);
   text-align: center;
-  span {
-    color: var(--clr-primary-5);
-  }
-  h5 {
-    color: var(--clr-white);
-    margin: 0.1rem;
 
-    font-weight: 400;
-    text-transform: none;
-    line-height: 1.25;
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--clr-grey-6);
   }
-  @media (min-width: 776px) {
-    flex-direction: row;
+
+  span {
+    color: var(--clr-primary-6);
+    font-weight: 600;
   }
 `;
 
