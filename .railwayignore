@@ -1,0 +1,8 @@
+# Backend deploys from server/ — keep snapshot small
+client/
+.netlify/
+**/node_modules/
+**/build/
+**/.env
+**/.env.*
+!**/.env.example
